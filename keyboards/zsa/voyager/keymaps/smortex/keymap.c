@@ -84,8 +84,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [LAYER_RGB] = LAYOUT(
         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-        RM_TOGG, RM_VALD, RM_VALU, RM_PREV, RM_NEXT, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+        XXXXXXX, RM_HUEU, RM_SATU, RM_VALU, RM_PREV, LM_SPDU,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+        RM_TOGG, RM_HUED, RM_SATD, RM_VALD, RM_NEXT, LM_SPDD,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
                                                      XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX
     ),
@@ -115,6 +115,54 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                     break;
                 case XXXXXXX:
                     rgb_matrix_set_color(index, RGB_OFF);
+                    break;
+                case RM_HUEU:
+                    {
+                        hsv_t hsv = rgb_matrix_get_hsv();
+                        hsv.h += 60;
+                        hsv.s = 255;
+                        hsv.v = 255;
+                        rgb_t rgb = hsv_to_rgb(hsv);
+                        rgb_matrix_set_color(index, rgb.r, rgb.g, rgb.b);
+                    }
+                    break;
+                case RM_HUED:
+                    {
+                        hsv_t hsv = rgb_matrix_get_hsv();
+                        hsv.h -= 60;
+                        hsv.s = 255;
+                        hsv.v = 255;
+                        rgb_t rgb = hsv_to_rgb(hsv);
+                        rgb_matrix_set_color(index, rgb.r, rgb.g, rgb.b);
+                    }
+                    break;
+                case RM_SATU:
+                case RM_VALU:
+                    {
+                        hsv_t hsv = rgb_matrix_get_hsv();
+                        hsv.s = 255;
+                        hsv.v = 255;
+                        rgb_t rgb = hsv_to_rgb(hsv);
+                        rgb_matrix_set_color(index, rgb.r, rgb.g, rgb.b);
+                    }
+                    break;
+                case RM_SATD:
+                    {
+                        hsv_t hsv = rgb_matrix_get_hsv();
+                        hsv.s = 0;
+                        hsv.v = 255;
+                        rgb_t rgb = hsv_to_rgb(hsv);
+                        rgb_matrix_set_color(index, rgb.r, rgb.g, rgb.b);
+                    }
+                    break;
+                case RM_VALD:
+                    {
+                        hsv_t hsv = rgb_matrix_get_hsv();
+                        hsv.s = 255;
+                        hsv.v = 0;
+                        rgb_t rgb = hsv_to_rgb(hsv);
+                        rgb_matrix_set_color(index, rgb.r, rgb.g, rgb.b);
+                    }
                     break;
                 default:
                     // Keep default color
